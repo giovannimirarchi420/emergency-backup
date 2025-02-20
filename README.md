@@ -1,4 +1,4 @@
-# Emergency Backup Project - Group 12
+# Emergency Backup Desktop Application
 
 ![Static Badge](https://img.shields.io/badge/language-rust-badge?labelColor=green&color=red)
 ![Static Badge](https://img.shields.io/badge/windows_os-working-badge?labelColor=blue&color=green)
@@ -22,7 +22,7 @@
 
 ## Introduction
 
-This project, developed by Giovanni Mirarchi (student ID s315105) for the System Programming course at the Politecnico di Torino (Master's Degree), implements a cross-platform Rust language application for PC, usable in both Unix and Windows environments, that allows you to perform an emergency backup in case the screen is not usable.
+This project, developed by Giovanni Mirarchi for the System Programming course at the Politecnico di Torino (Master's Degree), implements a cross-platform Rust language application for PC, usable in both Unix and Windows environments, that allows you to perform an emergency backup in case the screen is not usable.
 
 ## Features
 
@@ -61,7 +61,7 @@ A fourth executable, simply named `installer`, has been developed to simplify ap
 
 ### 1. Download and start the installer executable
 
-In order to be ready to start, you should choose the right installer in the **[release](https://github.com/ProgrammazioneDiSistema2024-IA-ZZ/Group12/releases)** page, the file names use the following format: **\<arch\_type\>**-**\<os\>**.
+In order to be ready to start, you should choose the right installer in the **[release](https://github.com/giovannimirarchi420/emergency-backup/releases)** page, the file names use the following format: **\<arch\_type\>**-**\<os\>**.
 Once downloaded execute it **with admin privileges** and follow the instructions, you can check further details on installer [README.md](installer/README.md) page.
 
 Now you can choose your favourite tool to set up and run the backup agent in background: **embgui** or **embctl**.
