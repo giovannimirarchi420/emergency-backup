@@ -1,0 +1,26 @@
+import { VerticalBox, Button, GridBox, CheckBox, Switch } from "std-widgets.slint";
+import { SideBar } from "./side_bar.slint";
+import { AboutPage } from "./pages/about.slint";
+import { Settings, SettingsPageAdapter } from "./pages/settings.slint";
+import { Home, HomePageAdapter } from "./pages/home.slint";
+import { StandardListView, StyleMetrics } from "std-widgets.slint";
+
+export { SettingsPageAdapter }
+export { HomePageAdapter }
+
+export component AppWindow inherits Window {
+    title: "Emergency Backup";
+    width: 1024px;
+    height: 512px;
+    HorizontalLayout {
+
+        side-bar := SideBar {
+            title: "Menu";
+            model: ["Home", "Settings", "About"];
+        }
+
+        if(side-bar.current-item == 0) : Home {}
+        if(side-bar.current-item == 1) : Settings {}
+        if(side-bar.current-item == 2) : AboutPage {}
+    }
+}

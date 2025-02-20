@@ -1,0 +1,14 @@
+[package]
+name = "config"
+version = "0.1.0"
+edition = "2021"
+authors = ["Giovanni Mirarchi"]
+
+[dependencies]
+log = "0.4.21"
+log4rs = { version = "1.3.0", features = ["gzip"] }
+byte-unit = "5.1.4"
+homedir = "0.2.1"
+anyhow = "1.0.86"
+errors = { path = "../errors" }
+settings = { path = "../settings" }

@@ -1,0 +1,214 @@
+import { Page } from "page.slint";
+import { TabWidget, ComboBox, GroupBox, HorizontalBox, VerticalBox, Button, LineEdit, CheckBox, Switch } from "std-widgets.slint";
+
+export global SettingsPageAdapter  {
+
+    in-out property<string> backup_source;
+    callback choose_backup_source();
+
+    in-out property<string> backup_destination;
+    callback choose_backup_destination();
+
+    in-out property<string> mode;
+    callback edited_mode(string);
+    //Advanced settings
+    in-out property<int> millis_update_frequency;
+    callback edited_millis_update_frequency(int);
+
+    in-out property<int> tracking_window_sec;
+    callback edited_tracking_window_sec(int);
+
+    in-out property<int> tolerance;
+    callback edited_tolerance(int);
+
+    in-out property<bool> extension_only;
+
+    in-out property<string> extension_type;
+    callback edited_extension_type(string);
+
+
+    callback apply_settings();
+}
+export component Settings inherits Page {
+
+    title: "Settings";
+    show-enable-switch: false;
+
+    VerticalBox {
+        vertical-stretch: 0;
+        horizontal-stretch: 0;
+
+        TabWidget {
+            Tab {
+                title: "General";
+
+                VerticalBox {
+                    alignment: start;
+
+                    GroupBox {
+                        title: "Backup source";
+                        width: 70%;
+                        height: 40px;
+
+                        HorizontalBox {
+
+                            Button {
+                                height: 30px;
+                                width: 20%;
+                                text: "Choose backup source";
+                                clicked => {SettingsPageAdapter.choose-backup-source()}
+                            }
+
+                            LineEdit {
+                                height: 30px;
+                                width: 50%;
+                                padding-left: 5px;
+                                read-only: true;
+                                text: SettingsPageAdapter.backup_source;
+                            }
+
+                            ComboBox {
+                                width: self.preferred-width;
+                                height: self.preferred-height + 5px;
+                                model: ["Folder", "File"];
+                                current-value: SettingsPageAdapter.mode;
+                                selected(model) => {
+                                    SettingsPageAdapter.mode = model;
+                                    SettingsPageAdapter.backup_source = "";
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle {height: 50px;}
+
+                    GroupBox {
+                        title: "Backup destination";
+                        height: 50px;
+                        width: 70%;
+                        HorizontalBox{
+                            Button {
+                                height: 30px;
+                                width: 20%;
+                                text: "Choose backup destination";
+                                clicked => {SettingsPageAdapter.choose-backup-destination()}
+                            }
+                            LineEdit {
+                                height: 30px;
+                                width: 50%;
+                                padding-left: 5px;
+                                read-only: true;
+                                text: SettingsPageAdapter.backup_destination;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Tab {
+                title: "Advanced";
+
+                VerticalBox {
+                    alignment: start;
+
+                    GroupBox {
+                        title: "Extension only";
+                        height: 30px;
+                        width: 400px;
+                        HorizontalLayout {
+                            spacing: 10px;
+                            CheckBox {
+                                text: "Only file with extension: ";
+                                checked: SettingsPageAdapter.extension_only;
+                                toggled => {
+                                    SettingsPageAdapter.extension_only = ! SettingsPageAdapter.extension_only;
+                                    file_extension.focus();
+                                }
+                            }
+
+                            file_extension := LineEdit {
+                                width: 50%;
+                                placeholder-text: "e.g. zip|rar|jpeg";
+                                text: SettingsPageAdapter.extension_type;
+                                edited(text) => {
+                                    SettingsPageAdapter.edited_extension_type(text);
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle {height: 50px;}
+
+                    GroupBox {
+                        title: "Advanced Settings";
+                        width: 70%;
+                        VerticalBox {
+
+                            mouse_position_text := Text {
+                                text: "Mouse Position Sampling Rate (ms):";
+                                width: self.preferred-width;
+                            }
+
+                            LineEdit {
+                                text: SettingsPageAdapter.millis_update_frequency;
+                                width: mouse_position_text.width;
+                                input-type: InputType.number;
+                                edited(text) => {
+                                    SettingsPageAdapter.edited_millis_update_frequency(text.to-float());
+                                }
+                            }
+                        }
+
+                        Rectangle {height: 25px;}
+
+                        VerticalBox {
+
+                            Text {
+                                text: "Tracking Window (sec):";
+                                width: self.preferred-width;
+                            }
+
+                            LineEdit {  // Example using LineEdit
+                                text: SettingsPageAdapter.tracking_window_sec;
+                                width: self.preferred-width * 2;
+                                input-type: InputType.number;
+                                edited(text) => {
+                                    SettingsPageAdapter.edited_tracking_window_sec(text.to-float());
+                                }
+                            }
+                        }
+
+                        Rectangle {height: 25px;}
+
+                        VerticalBox {
+
+                            tolerance_text := Text {
+                                text: "Tolerance (pixels):";
+                                width: self.preferred-width;
+                            }
+
+                            LineEdit {  // Example using LineEdit
+                                text: SettingsPageAdapter.tolerance;
+                                width: tolerance_text.width;
+                                input-type: InputType.number;
+                                edited(text) => {
+                                    SettingsPageAdapter.edited_tolerance(text.to-float());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Spacer
+    Rectangle { }
+
+    Button {
+        height: 30px;
+        text: "Apply settings";
+        clicked => {SettingsPageAdapter.apply_settings()}
+
+    }
+}

@@ -1,0 +1,30 @@
+import { HorizontalBox, VerticalBox } from "std-widgets.slint";
+
+export component ErrorWindow inherits Window {
+    title: "Emergency Backup";
+    in property<string> error;
+    in property<string> details;
+    in property<image> error_icon;
+
+
+    HorizontalLayout {
+        HorizontalBox {
+            Image {
+                padding: 20px;
+                source: error_icon;
+                width: 50px;
+                height: 50px;
+            }
+            
+            VerticalBox {
+                Text {
+                    text: "ERROR: " + error;
+                }
+
+                Text {
+                    text: "DETAILS: " + details;
+                }
+            }
+        }
+    }
+}

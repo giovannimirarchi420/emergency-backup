@@ -1,0 +1,17 @@
+
+import { AboutSlint } from "std-widgets.slint";
+import { Page } from "page.slint";
+
+export component AboutPage inherits Page {
+    title: "About";
+    show-enable-switch: false;
+    Text {
+        horizontal-alignment: center;
+        text: "This project, developed by Giovanni Mirarchi (student ID s315105) for the System Programming \ncourse at the Politecnico di Torino (Master's Degree), implements a Rust language application for PC that allows you\n to perform an emergency backup in case the screen is not usable.";
+    }
+
+    AboutSlint { }
+
+    // Spacer
+    Rectangle { }
+}

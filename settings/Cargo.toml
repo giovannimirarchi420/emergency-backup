@@ -1,0 +1,15 @@
+[package]
+name = "settings"
+version = "0.1.0"
+edition = "2021"
+authors = ["Giovanni Mirarchi"]
+
+[dependencies]
+errors = { path = "../errors" }
+serde = { version = "1.0.203", features = ["derive"] }
+serde_yaml = "0.8.26"
+anyhow = "1.0.86"
+homedir = "0.2.1"
+log4rs = { version = "1.3.0", features = ["gzip"] }
+log = "0.4.21"
+regex = "1.10.5"

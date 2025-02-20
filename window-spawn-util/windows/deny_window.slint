@@ -1,0 +1,35 @@
+import { HorizontalBox, VerticalBox, Button } from "std-widgets.slint";
+
+export component DenyWindow inherits Window {
+    callback cancel_backup();
+    in property<image> warning_icon;
+    title: "Emergency Backup";
+
+    HorizontalLayout {
+        VerticalBox {
+            HorizontalBox {
+                alignment: center;
+                Image {
+                    padding: 20px;
+                    source: warning_icon;
+                    width: 50px;
+                    height: 50px;
+                }
+
+                VerticalBox {
+                    Text {
+                        padding: 20px;
+                        text: "Mouse command detected, listenting for the confirmation command.\nPress cancel to stop listening.";
+                    }
+                }
+
+            }
+
+            
+            Button {
+                text: "Cancel";
+                clicked => { cancel_backup() }
+            }
+        }
+    }
+}

@@ -1,0 +1,42 @@
+import { Page } from "page.slint";
+import { TextEdit, HorizontalBox, VerticalBox, Button, GridBox, CheckBox, Switch, SpinBox } from "std-widgets.slint";
+
+export global HomePageAdapter  {
+    in-out property<bool> active: false;
+    callback toggle_tracker();
+}
+export component Home inherits Page {
+
+    title: "Home";
+    show-enable-switch: false;
+    HorizontalLayout {
+        alignment: center;
+        VerticalLayout {
+            alignment: space-between;
+            Text {
+                horizontal-alignment: center;
+                text: HomePageAdapter.active ? "Active" : "Not Active";
+                font-size: 30px;
+            }
+            Rectangle {
+                border-radius: self.width/2;
+                background: HomePageAdapter.active ? green : red;
+                width: 200px;
+                height: 200px;
+            }
+            HorizontalBox {
+                alignment: center;
+                Button {
+                    width: 100px;
+                    height: 25px;
+                    text: HomePageAdapter.active ? "Turn off" : "Turn on";
+                    clicked => {HomePageAdapter.toggle_tracker()}
+                }
+            }
+
+        }
+    }
+
+    // Spacer
+    Rectangle { }
+}

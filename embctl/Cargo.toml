@@ -1,0 +1,21 @@
+[package]
+name = "embctl"
+version = "1.0.0"
+edition = "2021"
+authors = ["Giovanni Mirarchi"]
+build = "build.rs"
+
+[dependencies]
+clap = { version = "4.5.7", features = ["derive"] }
+anyhow = "1.0.86"
+service-manager = "0.7.0"
+log = "0.4.21"
+log4rs = { version = "1.3.0", features = ["gzip"] }
+settings = { path = "../settings" }
+config = { path = "../config" }
+errors = { path = "../errors" }
+service-manager-util = { path = "../service-manager-util" }
+serde = { version = "1.0.204", features = ["derive"] }
+
+[build-dependencies]
+winresource = "0.1.17"

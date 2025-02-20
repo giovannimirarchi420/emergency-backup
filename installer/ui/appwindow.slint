@@ -1,0 +1,135 @@
+
+import { VerticalBox, CheckBox, Button, HorizontalBox, GroupBox, LineEdit, ProgressIndicator, Slider } from "std-widgets.slint";
+import { Page } from "page.slint";
+
+
+export global InstallerUiAdapter {
+    callback check-root-permissions();
+    callback choose-installation-destination();
+    callback install();
+    callback close();
+    in property <bool> root-granted;
+    in-out property <string> installation_dir;
+    in property <bool> installation_success: true;
+    in property <string> installation_error;
+    in property <float> width;
+    in property <float> height;
+    in-out property <bool> cli_selected;
+    in-out property <bool> gui_selected;
+
+}
+
+component SelectPage inherits Page {
+    Text {
+        text: "Select installation:";
+    }
+
+    CheckBox {
+        text: "Command Line Interface (embcli)";
+        checked: InstallerUiAdapter.cli_selected;
+        toggled => { InstallerUiAdapter.cli_selected = !InstallerUiAdapter.cli_selected; }
+    }
+
+    CheckBox {
+        text: "Graphic User Interface (embgui)";
+        checked: InstallerUiAdapter.gui_selected;
+        toggled => { InstallerUiAdapter.gui_selected = !InstallerUiAdapter.gui_selected; }
+    }
+}
+
+component DirectoryPage inherits Page {
+
+    GroupBox {
+        title: "Choose installation directory:";
+
+        HorizontalBox{
+            Button {
+                text: "Browse..";
+                clicked => {InstallerUiAdapter.choose-installation-destination()}
+            }
+
+            LineEdit {
+                read-only: true;
+                text: InstallerUiAdapter.installation_dir;
+            }
+        }
+    }
+}
+
+component LoadingPage inherits Page {
+
+    Text {
+        text: "Installing...";
+    }
+
+    ProgressIndicator {
+        indeterminate: true;
+    }
+}
+
+component ResultPage inherits Page {
+
+    if InstallerUiAdapter.installation_success: Text { text: "Installation completed"; }
+    if !InstallerUiAdapter.installation_success: Text { text: "Installation error: " + InstallerUiAdapter.installation_error; }
+}
+
+export component AppWindow inherits Window {
+    title: "Emergency Backup";
+    private property <int> pagen;
+    
+    VerticalBox {
+        HorizontalBox {
+            alignment: center;
+            Text {
+                text: "Emergency Backup Installer";
+                font-size: 30px;
+            }
+        }
+
+
+        if pagen == 0: SelectPage { }
+        if pagen == 1: DirectoryPage { }
+        if pagen == 2: LoadingPage { }
+        if pagen == 3: ResultPage { }
+
+        HorizontalBox {
+
+            if pagen == 0 : Button {
+                text: "Next";
+                enabled: InstallerUiAdapter.cli_selected || InstallerUiAdapter.gui_selected;
+                clicked => {
+                    InstallerUiAdapter.check-root-permissions();
+                    if (InstallerUiAdapter.root-granted) {
+                        pagen = pagen + 1;
+                    }
+                }
+            }
+
+            if pagen == 0 : Button {
+                text: "Cancel";
+                clicked => { InstallerUiAdapter.close() }
+            }
+
+            if pagen == 1 : Button {
+                text: "Install";
+                clicked => {
+                    pagen = pagen + 1;
+                    InstallerUiAdapter.install();
+                    pagen = pagen + 1;
+                }
+                enabled: InstallerUiAdapter.installation_dir != "";
+            }
+
+            if pagen == 3 : Button {
+                text: "Complete";
+                clicked => { InstallerUiAdapter.close() }
+            }
+
+            if !(pagen == 0) && !(pagen == 3) : Button {
+                text: "Back";
+                clicked => { pagen = pagen - 1; }
+            }
+        }
+
+    }
+}

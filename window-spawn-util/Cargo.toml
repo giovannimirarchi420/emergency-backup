@@ -1,0 +1,16 @@
+[package]
+name = "window-spawn-util"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.38.0", features = ["rt", "rt-multi-thread", "macros"] }
+slint = "1.6"
+slint-interpreter = "1.7.0"
+anyhow = "1.0.86"
+log = "0.4.22"
+errors = { path = "../errors"}
+service-manager-util = { path = "../service-manager-util"}
+config = { path = "../config"}
+log4rs = { version = "1.3.0", features = ["gzip"] }
+display-info = "0.5.1"

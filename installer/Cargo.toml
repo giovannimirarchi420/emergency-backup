@@ -1,0 +1,35 @@
+[package]
+name = "installer"
+version = "1.0.0"
+edition = "2021"
+authors = ["Giovanni Mirarchi"]
+build = "build.rs"
+description = "GUI application to correctly install the Emergency Bakcup application"
+
+[dependencies]
+slint = "1.6"
+homedir = "0.3.3"
+anyhow = "1.0.86"
+window-spawn-util = { path = "../window-spawn-util" }
+native-dialog = "0.7.0"
+config = { path = "../config" }
+settings = { path = "../settings" }
+log = "0.4.22"
+
+[target.'cfg(target_os = "macos")'.dependencies]
+include_directory = "0.1.1"
+
+[target.'cfg(target_family = "unix")'.dependencies]
+nix = "0.26.4"
+
+[build-dependencies]
+winresource = "0.1.17"
+slint-build = "1.6"
+
+[package.metadata.bundle.bin.installer]
+name = "installer"
+identifier = "it.gmirarchi.installer"
+icon = ["assets/installer.icns"]
+category = "Utility"
+short_description = "Emergency Backup Installer"
+
